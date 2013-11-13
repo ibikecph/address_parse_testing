@@ -2,6 +2,12 @@ Feature: Parse input addresses
 In order to find the correct place on the map 
 Users should be able to enter addresses in various formats 
 
+    Scenario: zip, city
+        When the address is parsed we should get
+            | input            | street | nr | zip  | city        |
+            | 1180 København K |        |    | 1180 | København K |
+            | 8600 Aarhus      |        |    | 8600 | Aarhus      |
+
     Scenario: Street
         When the address is parsed we should get
             | input      | street     | nr | zip | city |
@@ -45,6 +51,14 @@ Users should be able to enter addresses in various formats
         | Yrsas Plads, 7D   | Yrsas Plads | 7D   |     |      |
         | Yrsas Plads, 12K  | Yrsas Plads | 12K  |     |      |
         | Yrsas Plads, 921B | Yrsas Plads | 921B |     |      |
+
+    Scenario: Street, nr, city
+        When the address is parsed we should get
+        | input                | street   | nr  | zip | city  |
+        | Bredgade 35C Valby   | Bredgade | 35C |     | Valby |
+        | Bredgade, 35C Valby  | Bredgade | 35C |     | Valby |
+        | Bredgade, 35C, Valby | Bredgade | 35C |     | Valby |
+        | Bredgade, 35C, Valby | Bredgade | 35C |     | Valby |
 
     Scenario: Street, city, zip
         When the address is parsed we should get

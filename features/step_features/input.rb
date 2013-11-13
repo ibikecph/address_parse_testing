@@ -14,8 +14,10 @@ def parse input
   parsed = {}
   
   # address
-  # address is the first part that starts with a letter
-  if input.match /^[\s,]*([^\d,]+)/    
+  # address is the first part that starts with a letter - expect if it's after zip
+  if input.match /^[\s,]*\d{4}/       # if string starts with a zip, there's no street 
+    parsed['street'] = ''    
+  elsif input.match /^[\s,]*([^\d,]+)/    
     parsed['street'] = $1.to_s.strip
   elsif input.match /[\s,]*\d{1,3}[a-zA-Z]?[\s,]([^\d,]+)/
     parsed['street'] = $1.to_s.strip
@@ -45,8 +47,8 @@ def parse input
   end
   
   # city
-  # city is the first words after a comma or a digit
-  if input.match /\d\s+(([\p{L}]\s*)+)/
+  # city is the first words after a comma or a nr
+  if input.match /\d\w?\s+(([\p{L}]\s*)+)/
     parsed['city'] = $1.to_s.strip
   elsif input.match /,\s*(([\p{L}]\s*)+)/
     parsed['city'] = $1.to_s.strip
