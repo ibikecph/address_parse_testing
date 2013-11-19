@@ -48,13 +48,17 @@ def parse input
   
   # city
   # city is the first words after a comma or a nr
-  if input.match /\d\w?\s+(([\p{L}]\s*)+)/
+  if input.match /\d\w?\s+(([\p{L}\.]\s*)+)/
     parsed['city'] = $1.to_s.strip
-  elsif input.match /,\s*(([\p{L}]\s*)+)/
+  elsif input.match /,\s*(([\p{L}\.]\s*)+)/
     parsed['city'] = $1.to_s.strip
   else
     parsed['city'] = ''
   end
+
+  # expand kbh
+  parsed['city'].gsub! /\b(kbh|cph)\.\s*/i, 'København '
+  parsed['city'].gsub! /\b(kbh|cph)\b/i, 'København'
 
   parsed
 end
