@@ -34,6 +34,38 @@ Users should be able to enter addresses in various formats
             | Skt. Hans Torv    | Skt. Hans Torv    |    |     |      |
             | Christian X's Vej | Christian X's Vej |    |     |      |
 
+    Scenario: Street nr with letter
+        When the address is parsed we should get
+            | input           | street   | nr  | zip | city |
+            | Bredgade 55A    | Bredgade | 55A |     |      |
+            | Bredgade 55,A   | Bredgade | 55A |     |      |
+            | Bredgade 55 , A | Bredgade | 55A |     |      |
+            | Bredgade 55 A   | Bredgade | 55A |     |      |
+            | Bredgade 55  A  | Bredgade | 55A |     |      |
+            | Bredgade 55-A   | Bredgade | 55A |     |      |
+            | Bredgade 55 - A | Bredgade | 55A |     |      |
+
+    Scenario: Street nr with letter, city/zip
+        When the address is parsed we should get
+            | input                 | street   | nr  | zip  | city |
+            | Bredgade 55A, Hven    | Bredgade | 55A |      | Hven |
+            | Bredgade 55 A, Hven   | Bredgade | 55A |      | Hven |
+            | Bredgade 55  A, Hven  | Bredgade | 55A |      | Hven |
+            | Bredgade 55-A, Hven   | Bredgade | 55A |      | Hven |
+            | Bredgade 55 - A, Hven | Bredgade | 55A |      | Hven |
+            | Bredgade 55A, 4500    | Bredgade | 55A | 4500 |      |
+            | Bredgade 55 A, 4500   | Bredgade | 55A | 4500 |      |
+            | Bredgade 55  A, 4500  | Bredgade | 55A | 4500 |      |
+            | Bredgade 55-A, 4500   | Bredgade | 55A | 4500 |      |
+            | Bredgade 55 - A, 4500 | Bredgade | 55A | 4500 |      |
+
+    Scenario: Street nr ranges
+        When the address is parsed we should get
+            | input                    | street   | nr      | zip | city |
+            | Bredgade 1-2, Hven       | Bredgade | 1-2     |     | Hven |
+            | Bredgade 843-844, Hven   | Bredgade | 843-844 |     | Hven |
+            | Bredgade 55-59, Hven     | Bredgade | 55-59   |     | Hven |
+
     Scenario: Street, nr
         When the address is parsed we should get
             | input            | street      | nr   | zip | city |
