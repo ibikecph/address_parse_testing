@@ -13,10 +13,12 @@ end
 def parse input
   parsed = {}
   
-  # address
-  # address is the first part that starts with a letter - expect if it's after zip
-  if input.match /^[\s,]*\d{4}/       # if string starts with a zip, there's no street 
+  # street
+  # street is the first part that starts with a letter - expect if it's after zip
+  if input.match /^[\s,]*\d{4}/                                 # if string starts with a zip, there's no street
     parsed['street'] = ''    
+  elsif input.match /^[\s,]*([^,]+)[,\s]+\d{1,3}[a-zA-Z]?\b/    # accept street name with digits, if real nr comes later
+    parsed['street'] = $1.to_s.strip
   elsif input.match /^[\s,]*([^\d,]+)/    
     parsed['street'] = $1.to_s.strip
   elsif input.match /[\s,]*\d{1,3}[a-zA-Z]?[\s,]([^\d,]+)/
@@ -27,12 +29,9 @@ def parse input
 
   # nr
   # nr is always 1-3 digits, optionally follow by a letter
-  # but take care not to grab part of a zip
-  if input.match /[\s,](\d{1,3}[a-zA-Z]?)[\s,]/
-    parsed['nr'] = $1.to_s.strip
-  elsif input.match /[\s,](\d{1,3}[a-zA-Z]?)$/
-    parsed['nr'] = $1.to_s.strip
-  elsif input.match /^(\d{1,3}[a-zA-Z]?)[\s,]+/
+  # if we have several possible nr's pick the last
+  # take care not to grab part of a zip
+  if input.match /.*\b(\d{1,3}[a-zA-Z]?)\b/
     parsed['nr'] = $1.to_s.strip
   else
     parsed['nr'] = ''

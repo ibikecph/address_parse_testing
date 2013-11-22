@@ -14,6 +14,20 @@ Users should be able to enter addresses in various formats
             | Bredgade   | Bredgade   |    |     |      |
             | Lille Torv | Lille Torv |    |     |      |
 
+    Scenario: Street with digits
+        When the address is parsed we should get
+            | input                                | street                       | nr   | zip  | city |
+            | Vej 6                                | Vej                          | 6    |      |      |
+            | Vej 6, 45                            | Vej 6                        | 45   |      |      |
+            | Vej 6 45                             | Vej 6                        | 45   |      |      |
+            | Vej 6, 432b                          | Vej 6                        | 432b |      |      |
+            | Vej 6 1A                             | Vej 6                        | 1A   |      |      |
+            | Vej 6, 45 2200                       | Vej 6                        | 45   | 2200 |      |
+            | Vej 6 45, 2200                       | Vej 6                        | 45   | 2200 |      |
+            | Christian d. 10's vej 45, 2200       | Christian d. 10's vej        | 45   | 2200 |      |
+            | Hans 10's og Ulla 20's Plads 50 2200 | Hans 10's og Ulla 20's Plads | 50   | 2200 |      |
+            | Boulevard 20x30, 99, 5500            | Boulevard 20x30              | 99   | 5500 |      |
+
     Scenario: Street with special characters 
         When the address is parsed we should get
             | input             | street            | nr | zip | city |
